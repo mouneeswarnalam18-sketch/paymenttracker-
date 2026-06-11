@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-card">
+
+    <h2 class="mb-4">🔍 Search Customer</h2>
+
+    <form method="GET" class="mb-4">
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                name="q"
+                class="form-control form-control-lg"
+                placeholder="Enter customer name">
+
+            <button class="btn btn-primary">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+    {% for customer in customers %}
+
+    <div class="card mb-3 shadow">
+
+        <div class="card-body">
+
+            <h5>👤 {{ customer.name }}</h5>
+
+            <p>
+                📄 {{ customer.customer_code }}
+                <br>
+                📞 {{ customer.phone }}
+            </p>
+
+            <a href="/history/?customer={{ customer.id }}"
+               class="btn btn-info">
+               View History
+            </a>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <p>No customers found.</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
