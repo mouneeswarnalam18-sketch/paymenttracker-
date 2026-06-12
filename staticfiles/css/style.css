@@ -175,18 +175,21 @@ body{
 @media (max-width: 768px) {
 
     .sidebar{
-        width:100%;
-        height:auto;
-        position:relative;
+        display:none;
     }
 
     .content{
         margin-left:0;
         padding:10px;
+        width:100%;
     }
 
     .hero{
-        padding:20px;
+        padding:15px;
+    }
+
+    .page-card{
+        padding:15px;
     }
 
     .card{
@@ -197,9 +200,5 @@ body{
         display:block;
         overflow-x:auto;
         white-space:nowrap;
-    }
-
-    .page-card{
-        padding:15px;
     }
 }
