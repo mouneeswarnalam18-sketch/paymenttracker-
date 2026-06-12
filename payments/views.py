@@ -128,7 +128,36 @@ def payment_history(request):
             'payments': payments
         }
     )
+from datetime import date
+from .models import Customer, Payment
+from datetime import date
+from .models import Customer, Payment
+
+
+def generate_monthly_payments():
+
+    today = date.today()
+
+    for customer in Customer.objects.all():
+
+        exists = Payment.objects.filter(
+            customer=customer,
+            month=today.month,
+            year=today.year
+        ).exists()
+
+        if not exists:
+            Payment.objects.create(
+                customer=customer,
+                month=today.month,
+                year=today.year,
+                status='Not Paid'
+            )
+
+
 def dashboard(request):
+
+    generate_monthly_payments()
 
     today = date.today()
 
@@ -151,9 +180,7 @@ def dashboard(request):
     ).count()
 
     expected_collection = total_customers * 3000
-
     received_collection = paid_count * 3000
-
     pending_collection = expected_collection - received_collection
 
     return render(
