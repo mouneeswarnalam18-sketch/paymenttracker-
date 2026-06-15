@@ -232,3 +232,64 @@ def unpaid_customers(request):
             'current_year': current_year
         }
     )
+from openpyxl import Workbook
+from django.http import HttpResponse
+from .models import Customer, Payment
+
+
+def export_backup(request):
+
+    wb = Workbook()
+
+    # Customers Sheet
+    ws1 = wb.active
+    ws1.title = "Customers"
+
+    ws1.append([
+        "Customer Code",
+        "Name",
+        "Phone"
+    ])
+
+    for c in Customer.objects.all():
+
+        ws1.append([
+            c.customer_code,
+            c.name,
+            c.phone
+        ])
+
+    # Payments Sheet
+    ws2 = wb.create_sheet("Payments")
+
+    ws2.append([
+    "Customer Code",
+    "Customer Name",
+    "Phone",
+    "Month",
+    "Year",
+    "Status"
+])
+
+    for p in Payment.objects.all():
+
+        ws2.append([
+        p.customer.customer_code,
+        p.customer.name,
+        p.customer.phone,
+        p.month,
+        p.year,
+        p.status
+    ])
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    today = date.today()
+
+    response['Content-Disposition'] = (f'attachment; filename=RK_Backup_{today}.xlsx')
+
+    wb.save(response)
+
+    return response

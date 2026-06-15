@@ -14,4 +14,9 @@ urlpatterns = [
     path('customers/', views.customers, name='customers'),
     path('customer/edit/<int:id>/', views.edit_customer, name='edit_customer'),
     path('customer/delete/<int:id>/', views.delete_customer, name='delete_customer'),
+    path(
+    'backup/',
+    views.export_backup,
+    name='backup'
+),
 ]
