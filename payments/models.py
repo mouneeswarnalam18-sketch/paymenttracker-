@@ -11,7 +11,7 @@ class Customer(models.Model):
         super().save(*args, **kwargs)
 
         if is_new:
-            start_month = 6
+            start_month = 7
             start_year = 2026
 
             for i in range(36):
@@ -60,7 +60,7 @@ class Payment(models.Model):
         null=True,
         blank=True
     )
-
+    
     class Meta:
         unique_together = ('customer', 'month', 'year')
 

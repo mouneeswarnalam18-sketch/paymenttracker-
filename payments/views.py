@@ -293,3 +293,55 @@ def export_backup(request):
     wb.save(response)
 
     return response
+from openpyxl import Workbook
+from django.http import HttpResponse
+from datetime import date
+from .models import Payment
+
+def export_monthly_report(request):
+
+    today = date.today()
+
+    wb = Workbook()
+
+    ws = wb.active
+    ws.title = "Monthly Report"
+
+    ws.append([
+        "Customer Code",
+        "Customer Name",
+        "Phone",
+        "Month",
+        "Year",
+        "Amount",
+        "Status"
+    ])
+
+    payments = Payment.objects.filter(
+        month=today.month,
+        year=today.year
+    )
+
+    for p in payments:
+
+        ws.append([
+            p.customer.customer_code,
+            p.customer.name,
+            p.customer.phone,
+            p.month,
+            p.year,
+            p.amount,
+            p.status
+        ])
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    response['Content-Disposition'] = (
+        f'attachment; filename=Monthly_Report_{today.month}_{today.year}.xlsx'
+    )
+
+    wb.save(response)
+
+    return response

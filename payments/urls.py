@@ -18,5 +18,10 @@ urlpatterns = [
     'backup/',
     views.export_backup,
     name='backup'
+    ),
+    path(
+    'monthly-report/',
+    views.export_monthly_report,
+    name='monthly_report'
 ),
 ]
