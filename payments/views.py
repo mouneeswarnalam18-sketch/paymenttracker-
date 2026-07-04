@@ -6,6 +6,10 @@ from datetime import date
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+from urllib.parse import quote
+from django.shortcuts import redirect, get_object_or_404
+from django.utils import timezone
+from django.http import HttpResponse
 def delete_customer(request, id):
 
     customer = get_object_or_404(Customer, id=id)
@@ -54,24 +58,7 @@ def customers(request):
             'customers': customers
         }
     )
-def mark_paid(request, payment_id):
-
-    payment = get_object_or_404(
-        Payment,
-        id=payment_id
-    )
-
-    payment.status = 'Paid'
-
-    payment.paid_date = timezone.now().date()
-
-    payment.paid_time = timezone.now()
-
-    payment.save()
-
-    return redirect('unpaid')
-from django.shortcuts import get_object_or_404, redirect
-from django.utils import timezone
+from urllib.parse import quote
 
 def mark_paid(request, payment_id):
 
@@ -83,7 +70,23 @@ def mark_paid(request, payment_id):
         payment.paid_time = timezone.now()
         payment.save()
 
-    return redirect('unpaid')
+    phone = "91" + payment.customer.phone
+
+    message = f"""
+🏆 RK Lucky Draw
+
+Dear {payment.customer.name},
+
+Your payment of ₹{payment.amount} for {payment.month}/{payment.year} has been received successfully.
+
+Thank you for your payment.
+
+- RK Lucky Draw
+"""
+
+    whatsapp_url = f"https://wa.me/{phone}?text={quote(message)}"
+
+    return redirect(whatsapp_url)
 def search_customer(request):
     query = request.GET.get('q')
 
@@ -223,6 +226,9 @@ def unpaid_customers(request):
         )
         print("SEARCH =", query)
         print("RESULTS =", payments.count())
+        
+        # for payment in payments:
+        # payment.month_name = months[payment.month]
     return render(
         request,
         'unpaid_customers.html',
@@ -293,6 +299,38 @@ def export_backup(request):
     wb.save(response)
 
     return response
+from urllib.parse import quote
+from django.shortcuts import get_object_or_404, redirect
+
+def send_reminder(request, payment_id):
+
+    payment = get_object_or_404(Payment, id=payment_id)
+
+    phone = "91" + payment.customer.phone
+
+    months = {
+        1:"January", 2:"February", 3:"March", 4:"April",
+        5:"May", 6:"June", 7:"July", 8:"August",
+        9:"September", 10:"October", 11:"November", 12:"December"
+    }
+
+    message = f"""
+🏆 RK Lucky Draw
+
+Dear {payment.customer.name},
+
+This is a friendly reminder that your payment of ₹{payment.amount} for {months[payment.month]} {payment.year} is still pending.
+
+Kindly make the payment at your earliest convenience.
+
+Thank you.
+
+- RK Lucky Draw
+"""
+
+    whatsapp_url = f"https://wa.me/91{payment.customer.phone}?text={quote(message)}"
+
+    return redirect(whatsapp_url)
 from openpyxl import Workbook
 from django.http import HttpResponse
 from datetime import date

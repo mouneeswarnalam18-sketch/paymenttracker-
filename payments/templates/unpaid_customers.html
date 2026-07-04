@@ -102,11 +102,18 @@
                 <td>{{ payment.year }}</td>
 
                 <td>
-                    <a href="{% url 'mark_paid' payment.id %}"
-                       class="btn btn-success btn-sm">
-                       ✓ Mark Paid
-                    </a>
-                </td>
+
+    <a href="{% url 'mark_paid' payment.id %}"
+       class="btn btn-success btn-sm">
+       ✅ Paid
+    </a>
+
+    <!-- <a href="{% url 'send_reminder' payment.id %}"
+       class="btn btn-warning btn-sm">
+       📲 Reminder
+    </a> -->
+
+</td>
 
             </tr>
         {% empty %}

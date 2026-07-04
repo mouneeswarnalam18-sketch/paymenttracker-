@@ -24,4 +24,9 @@ urlpatterns = [
     views.export_monthly_report,
     name='monthly_report'
 ),
+    path(
+    'reminder/<int:payment_id>/',
+    views.send_reminder,
+    name='send_reminder'
+),
 ]
