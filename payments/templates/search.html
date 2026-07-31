@@ -4,7 +4,18 @@
 
 <div class="page-card">
 
-    <h2 class="mb-4">🔍 Search Customer</h2>
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <div>
+            <h2 class="mb-1">🔍 Search Customer</h2>
+            <p class="text-muted mb-0">
+                Search by Customer Name, Code or Phone Number
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Search Box -->
 
     <form method="GET" class="mb-4">
 
@@ -13,10 +24,11 @@
             <input
                 type="text"
                 name="q"
+                value="{{ request.GET.q }}"
                 class="form-control form-control-lg"
-                placeholder="Enter customer name">
+                placeholder="🔍 Enter Customer Name, Code or Phone">
 
-            <button class="btn btn-primary">
+            <button class="btn btn-primary px-4">
                 Search
             </button>
 
@@ -24,24 +36,68 @@
 
     </form>
 
+    <!-- Search Results -->
+
     {% for customer in customers %}
 
-    <div class="card mb-3 shadow">
+    <div class="card shadow border-0 mb-3">
 
         <div class="card-body">
 
-            <h5>👤 {{ customer.name }}</h5>
+            <div class="row align-items-center">
 
-            <p>
-                📄 {{ customer.customer_code }}
-                <br>
-                📞 {{ customer.phone }}
-            </p>
+                <div class="col-md-6">
 
-            <a href="/history/?customer={{ customer.id }}"
-               class="btn btn-info">
-               View History
-            </a>
+                    <div class="d-flex align-items-center">
+
+                        <img
+                        src="https://ui-avatars.com/api/?name={{ customer.name }}&background=2563eb&color=fff"
+                        width="55"
+                        height="55"
+                        class="rounded-circle me-3">
+
+                        <div>
+
+                            <h5 class="mb-1">
+
+                                {{ customer.name }}
+
+                            </h5>
+
+                            <small class="text-muted">
+
+                                {{ customer.customer_code }}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-3 mt-3 mt-md-0">
+
+                    <strong>📞 Phone</strong>
+
+                    <br>
+
+                    {{ customer.phone }}
+
+                </div>
+
+                <div class="col-md-3 mt-3 mt-md-0 text-md-end">
+
+                    <a href="/history/?customer={{ customer.id }}"
+                       class="btn btn-primary rounded-pill">
+
+                        📜 Payment History
+
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -49,7 +105,19 @@
 
     {% empty %}
 
-    <p>No customers found.</p>
+    <div class="text-center py-5">
+
+        <h1>🔍</h1>
+
+        <h4>No Customer Found</h4>
+
+        <p class="text-muted">
+
+            Try searching with a different Name, Customer Code or Phone Number.
+
+        </p>
+
+    </div>
 
     {% endfor %}
 

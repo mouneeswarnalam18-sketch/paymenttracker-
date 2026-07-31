@@ -1,83 +1,105 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="GET" class="mb-4">
 
-    <input type="text"
-           name="q"
-           class="form-control"
-           placeholder="🔍 Search customer">
-
-</form>
-    <div class="row mb-4">
-
-    <div class="col-md-4">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <h5>Total Customers</h5>
-                <h2>{{ customers|length }}</h2>
-            </div>
-        </div>
-    </div>
-
-</div>
 <div class="page-card">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2>👥 Customers</h2>
+        <div>
+            <h2>👥 Customers</h2>
+            <p class="text-muted">Manage all registered customers</p>
+        </div>
 
         <span class="badge bg-primary">
-            Total: {{ customers|length }}
+            Total : {{ customers|length }}
         </span>
 
     </div>
 
-    <table class="table table-dark table-hover">
+    <form method="GET" class="mb-4">
 
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <div class="input-group">
 
-        <tbody>
+            <input
+                type="text"
+                name="q"
+                class="form-control form-control-lg"
+                placeholder="🔍 Search Customer"
+                value="{{ request.GET.q }}">
 
-        {% for customer in customers %}
+            <button class="btn btn-primary">
+                Search
+            </button>
 
-            <tr>
-                <td>
-    <a href="{% url 'edit_customer' customer.id %}"
-   class="btn btn-warning btn-sm">
-   ✏ Edit
-</a>
+        </div>
 
-<a href="{% url 'delete_customer' customer.id %}"
-   class="btn btn-danger btn-sm"
-   onclick="return confirm('Delete this customer?')">
-   🗑 Delete
-</a>
-</td>
-                <td>{{ customer.customer_code }}</td>
+    </form>
 
-                <td>
-                    👤 {{ customer.name }}
-                </td>
+    <div class="table-responsive">
 
-                <td>
-                    📞 {{ customer.phone }}
-                </td>
+        <table class="table table-hover align-middle">
 
-            </tr>
+            <thead class="table-dark">
 
-        {% endfor %}
+                <tr>
 
-        </tbody>
+                    <th>Customer</th>
+                    <th>Code</th>
+                    <th>Phone</th>
+                   
+                </tr>
 
-    </table>
+            </thead>
+
+            <tbody>
+
+            {% for customer in customers %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="d-flex align-items-center">
+
+                            <img
+                            src="https://ui-avatars.com/api/?name={{ customer.name }}&background=2563eb&color=fff"
+                            width="45"
+                            height="45"
+                            class="rounded-circle me-3">
+
+                            <strong>{{ customer.name }}</strong>
+
+                        </div>
+
+                    </td>
+
+                    <td>{{ customer.customer_code }}</td>
+
+                    <td>📞 {{ customer.phone }}</td>
+
+                    
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center">
+
+                        No customers found.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 

@@ -4,131 +4,247 @@
 
 <div class="page-card">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>❌ Unpaid Customers Report</h2>
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
 
-        <span class="badge bg-danger fs-6">
+        <div>
+            <h2 class="mb-1">❌ Unpaid Customers</h2>
+            <p class="text-muted mb-0">
+                Customers with pending payments
+            </p>
+        </div>
+
+        <span class="badge bg-danger fs-6 px-3 py-2">
             {{ current_month }}/{{ current_year }}
         </span>
-    </div>
-    <div class="row mb-4">
 
-    <div class="col-md-4">
-        <div class="card bg-danger text-white shadow-lg">
-            <div class="card-body">
-                <h5>Unpaid Customers</h5>
-                <h2>{{ payments|length }}</h2>
+    </div>
+
+    <!-- Summary -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 bg-danger text-white">
+
+                <div class="card-body">
+
+                    <h6>Unpaid Customers</h6>
+
+                    <h2>{{ payments|length }}</h2>
+
+                </div>
+
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card bg-warning text-dark shadow-lg">
-            <div class="card-body">
-                <h5>Month</h5>
-                <h2>{{ current_month }}</h2>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 bg-warning">
+
+                <div class="card-body">
+
+                    <h6>Month</h6>
+
+                    <h2>{{ current_month }}</h2>
+
+                </div>
+
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-4">
-        <div class="card bg-info text-white shadow-lg">
-            <div class="card-body">
-                <h5>Year</h5>
-                <h2>{{ current_year }}</h2>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 bg-info text-white">
+
+                <div class="card-body">
+
+                    <h6>Year</h6>
+
+                    <h2>{{ current_year }}</h2>
+
+                </div>
+
             </div>
+
         </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card shadow border-0 bg-success text-white">
+
+                <div class="card-body">
+
+                    <h6>Pending Amount</h6>
+
+                    <h2>₹{{ payments|length }} × 3000</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-</div>
-<div class="mb-4">
+    <!-- Search -->
 
-    <form method="GET">
+    <form method="GET" class="mb-4">
 
         <div class="input-group">
 
             <input
                 type="text"
                 name="q"
-                class="form-control"
-                placeholder="🔍 Search Customer Code, Name or Phone">
+                value="{{ request.GET.q }}"
+                class="form-control form-control-lg"
+                placeholder="🔍 Search by Customer Code, Name or Phone">
 
-            <button
-                type="submit"
-                class="btn btn-primary">
+            <button class="btn btn-primary px-4">
+
                 Search
+
             </button>
 
         </div>
 
     </form>
 
-</div>
-    <table class="table table-dark table-hover align-middle">
+    <!-- Table -->
 
-        <thead>
-            <tr>
-                <th>Customer Code</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Month</th>
-                <th>Year</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+    <div class="table-responsive">
 
-        <tbody>
+        <table class="table table-hover align-middle">
 
-        {% for payment in payments %}
-            <tr>
+            <thead class="table-dark">
 
-                <td>{{ payment.customer.customer_code }}</td>
+                <tr>
 
-               <td>
-    <div class="d-flex align-items-center">
-        <img src="https://ui-avatars.com/api/?name={{ payment.customer.name }}"
-             width="40" height="40"
-             class="rounded-circle me-2">
-        {{ payment.customer.name }}
+                    <th>Customer</th>
+
+                    <th>Phone</th>
+
+                    <th>Month</th>
+
+                    <th>Year</th>
+
+                    <th class="text-center">Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for payment in payments %}
+
+                <tr>
+
+                    <td>
+
+                        <div class="d-flex align-items-center">
+
+                            <img
+                            src="https://ui-avatars.com/api/?name={{ payment.customer.name }}&background=2563eb&color=fff"
+                            width="45"
+                            height="45"
+                            class="rounded-circle me-3">
+
+                            <div>
+
+                                <strong>
+
+                                    {{ payment.customer.name }}
+
+                                </strong>
+
+                                <br>
+
+                                <small class="text-muted">
+
+                                    {{ payment.customer.customer_code }}
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        📞 {{ payment.customer.phone }}
+
+                    </td>
+
+                    <td>
+
+                        {{ payment.month_name }}
+
+                    </td>
+
+                    <td>
+
+                        {{ payment.year }}
+
+                    </td>
+
+                    <td class="text-center">
+
+                        <a
+                        href="{% url 'mark_paid' payment.id %}"
+                        class="btn btn-success rounded-pill btn-sm">
+
+                            ✅ Paid
+
+                        </a>
+
+                        <!-- <a
+                        href="{% url 'send_reminder' payment.id %}"
+                        class="btn btn-warning rounded-pill btn-sm">
+
+                            📲 Reminder
+
+                        </a> -->
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="5">
+
+                        <div class="text-center py-5">
+
+                            <h1>🎉</h1>
+
+                            <h3>Excellent!</h3>
+
+                            <p class="text-muted">
+
+                                All customers have completed their payments this month.
+
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
     </div>
-</td>
-
-                <td>
-    📞 {{ payment.customer.phone }}
-</td>
-
-                <td>{{ payment.month }}</td>
-
-                <td>{{ payment.year }}</td>
-
-                <td>
-
-    <a href="{% url 'mark_paid' payment.id %}"
-       class="btn btn-success btn-sm">
-       ✅ Paid
-    </a>
-
-    <!-- <a href="{% url 'send_reminder' payment.id %}"
-       class="btn btn-warning btn-sm">
-       📲 Reminder
-    </a> -->
-
-</td>
-
-            </tr>
-        {% empty %}
-
-            <tr>
-                <td colspan="6" class="text-center">
-                    🎉 No unpaid customers this month
-                </td>
-            </tr>
-
-        {% endfor %}
-
-        </tbody>
-
-    </table>
 
 </div>
 

@@ -38,8 +38,11 @@ def edit_customer(request, id):
             'customer': customer
         }
     )
-def customers(request):
+from django.http import HttpResponse
 
+from django.db.models import Q
+
+def customers(request):
     query = request.GET.get('q')
 
     customers = Customer.objects.all()
