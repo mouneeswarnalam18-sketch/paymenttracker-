@@ -83,8 +83,13 @@ WSGI_APPLICATION = 'paymenttracker.wsgi.application'
 import os
 import dj_database_url
 
-import os
-import dj_database_url
+from dotenv import load_dotenv
+load_dotenv()
+
+# ...
+
+print("DATABASE_URL exists:", bool(os.environ.get("DATABASE_URL")))
+print("DATABASE_URL:", os.environ.get("DATABASE_URL"))
 
 if os.environ.get("DATABASE_URL"):
     DATABASES = {
