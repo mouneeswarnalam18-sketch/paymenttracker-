@@ -114,7 +114,7 @@
 
     <!-- Table -->
 
-    <div class="table-responsive">
+    <div class="table-responsive mobile-table">
 
         <table class="table table-hover align-middle">
 
@@ -124,14 +124,12 @@
 
                     <th>Customer</th>
 
-                    <th>Phone</th>
+                    <!-- <th>Phone</th> -->
 
-                    <th>Month</th>
-
-                    <th>Year</th>
+                   
 
                     <th class="text-center">Action</th>
-
+                    <th>Phone</th>
                 </tr>
 
             </thead>
@@ -173,14 +171,21 @@
                         </div>
 
                     </td>
+                                       <td class="text-center">
 
+                       <a
+href="{% url 'mark_paid' payment.id %}"
+class="btn btn-success btn-sm paid-btn">
+
+    ✅ Paid
+</a>
                     <td>
 
                         📞 {{ payment.customer.phone }}
 
                     </td>
 
-                    <td>
+                    <!-- <td>
 
                         {{ payment.month_name }}
 
@@ -190,17 +195,16 @@
 
                         {{ payment.year }}
 
-                    </td>
+                    </td> -->
 
-                    <td class="text-center">
+                    <!-- <td class="text-center">
 
-                        <a
-                        href="{% url 'mark_paid' payment.id %}"
-                        class="btn btn-success rounded-pill btn-sm">
+                       <a
+href="{% url 'mark_paid' payment.id %}"
+class="btn btn-success btn-sm paid-btn">
 
-                            ✅ Paid
-
-                        </a>
+    ✅ Paid
+</a> -->
 
                         <!-- <a
                         href="{% url 'send_reminder' payment.id %}"
@@ -218,7 +222,7 @@
 
                 <tr>
 
-                    <td colspan="5">
+                    <td colspan="3">
 
                         <div class="text-center py-5">
 

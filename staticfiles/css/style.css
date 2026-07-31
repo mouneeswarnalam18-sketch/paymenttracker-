@@ -171,7 +171,6 @@ body{
     border-left:4px solid white;
 }
 /* Mobile Responsive */
-
 @media (max-width: 768px) {
 
     .sidebar{
@@ -190,15 +189,20 @@ body{
 
     .page-card{
         padding:15px;
-    }
-
-    .card{
-        margin-bottom:15px;
-    }
-
-    table{
-        display:block;
         overflow-x:auto;
+    }
+
+    .table-responsive{
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    .table{
+        min-width:700px;
+    }
+
+    .table th,
+    .table td{
         white-space:nowrap;
     }
 }
