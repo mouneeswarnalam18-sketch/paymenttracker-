@@ -80,6 +80,8 @@ def mark_paid(request, payment_id):
 
 Dear {payment.customer.name},
 
+Your id : {payment.customer.id}
+
 Your payment of ₹{payment.amount} for {payment.month}/{payment.year} has been received successfully.
 
 Thank you for your payment.

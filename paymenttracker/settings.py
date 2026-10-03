@@ -88,8 +88,8 @@ load_dotenv()
 
 # ...
 
-print("DATABASE_URL exists:", bool(os.environ.get("DATABASE_URL")))
-print("DATABASE_URL:", os.environ.get("DATABASE_URL"))
+# print("DATABASE_URL exists:", bool(os.environ.get("DATABASE_URL")))
+# print("DATABASE_URL:", os.environ.get("DATABASE_URL"))
 
 if os.environ.get("DATABASE_URL"):
     DATABASES = {

@@ -11,10 +11,10 @@ class Customer(models.Model):
         super().save(*args, **kwargs)
 
         if is_new:
-            start_month = 7
+            start_month = 10
             start_year = 2026
 
-            for i in range(36):
+            for i in range(31):
                 month = ((start_month - 1 + i) % 12) + 1
                 year = start_year + ((start_month - 1 + i) // 12)
 
